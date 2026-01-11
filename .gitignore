@@ -1,0 +1,17 @@
+# Node.js
+node_modules/
+npm-debug.log*
+.env
+
+# SQLite
+database.db
+
+# macOS
+.DS_Store
+
+# Build artifacts
+build/
+dist/
+
+# Logs
+*.log
