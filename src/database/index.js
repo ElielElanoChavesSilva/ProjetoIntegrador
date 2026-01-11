@@ -30,8 +30,8 @@ db.serialize(() => {
         OrderId INTEGER,
         ProductId INTEGER,
         Quantity INTEGER,
-        FOREIGN KEY (OrderId) REFERENCES orders (Id),
-        FOREIGN KEY (ProductId) REFERENCES products (Id)
+        FOREIGN KEY (OrderId) REFERENCES Orders (Id),
+        FOREIGN KEY (ProductId) REFERENCES Products (Id)
     )`);
 
     const products = [
@@ -42,7 +42,7 @@ db.serialize(() => {
     ];
 
     products.forEach(product => {
-        db.run(`INSERT INTO Products (name, price) VALUES (?, ?)`, [product.name, product.price]);
+        db.run(`INSERT INTO Products (Name, Price) VALUES (?, ?)`, [product.name, product.price]);
     });
 });
 

@@ -39,7 +39,7 @@ exports.signin = (req, res) => {
         return res.status(400).json({ msg: 'Please enter all fields' });
     }
 
-    db.get('SELECT * FROM Users WHERE email = ?', [email], (err, user) => {
+    db.get('SELECT * FROM Users WHERE Email = ?', [email], (err, user) => {
         if (err) {
             return res.status(500).json({ msg: err.message });
         }
@@ -53,8 +53,8 @@ exports.signin = (req, res) => {
             }
 
             jwt.sign(
-                { id: user.id },
-                'your_jwt_secret',
+                { id: user.id, name: user.name, email: user.email },
+                process.env.JWT_SECRET,
                 { expiresIn: 3600 },
                 (err, token) => {
                     if (err) throw err;
