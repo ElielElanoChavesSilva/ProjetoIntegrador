@@ -1,10 +1,10 @@
-const db = require('../database');
+const productService = require('../services/productService');
 
-exports.getAllProducts = (req, res) => {
-    db.all('SELECT * FROM Products', (err, rows) => {
-        if (err) {
-            return res.status(500).json({ msg: err.message });
-        }
-        res.json(rows);
-    });
+exports.getAllProducts = async (req, res) => {
+    try {
+        const products = await productService.getAllProducts();
+        res.json(products);
+    } catch (error) {
+        res.status(error.status || 500).json({ msg: error.msg || 'Server error' });
+    }
 };

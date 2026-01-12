@@ -1,0 +1,192 @@
+{
+    "_type": "export",
+    "__export_format": 4,
+    "__export_date": "2024-05-20T15:00:00.000Z",
+    "__export_source": "gemini-cli",
+    "resources": [
+        {
+            "_id": "wrk_generated_1",
+            "parentId": null,
+            "modified": 1678886400000,
+            "created": 1678886400000,
+            "name": "Backend API (Generated)",
+            "description": "",
+            "scope": "collection",
+            "_type": "workspace"
+        },
+        {
+            "_id": "env_generated_1",
+            "parentId": "wrk_generated_1",
+            "modified": 1678886400000,
+            "created": 1678886400000,
+            "name": "Base Environment",
+            "data": {
+                "baseUrl": "http://localhost:3000"
+            },
+            "dataPropertyOrder": {
+                "&": [
+                    "baseUrl"
+                ]
+            },
+            "color": null,
+            "isPrivate": false,
+            "metaSortKey": 1678886400000,
+            "_type": "environment"
+        },
+        {
+            "_id": "jar_generated_1",
+            "parentId": "wrk_generated_1",
+            "modified": 1678886400000,
+            "created": 1678886400000,
+            "name": "Default Jar",
+            "cookies": [],
+            "_type": "cookie_jar"
+        },
+        {
+            "_id": "fld_auth",
+            "parentId": "wrk_generated_1",
+            "modified": 1678886400000,
+            "created": 1678886400000,
+            "name": "Auth",
+            "description": "",
+            "environment": {},
+            "metaSortKey": -100,
+            "_type": "request_group"
+        },
+        {
+            "_id": "req_signup",
+            "parentId": "fld_auth",
+            "modified": 1678886400000,
+            "created": 1678886400000,
+            "url": "{{ _.baseUrl }}/auth/signup",
+            "name": "Sign Up",
+            "description": "",
+            "method": "POST",
+            "body": {
+                "mimeType": "application/json",
+                "text": "{\n\t\"name\": \"Test User\",\n\t\"email\": \"test@example.com\",\n\t\"password\": \"password123\"\n}"
+            },
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "id": "pair_1"
+                }
+            ],
+            "authentication": {},
+            "metaSortKey": -10,
+            "_type": "request"
+        },
+        {
+            "_id": "req_signin",
+            "parentId": "fld_auth",
+            "modified": 1678886400000,
+            "created": 1678886400000,
+            "url": "{{ _.baseUrl }}/auth/signin",
+            "name": "Sign In",
+            "description": "",
+            "method": "POST",
+            "body": {
+                "mimeType": "application/json",
+                "text": "{\n\t\"email\": \"test@example.com\",\n\t\"password\": \"password123\"\n}"
+            },
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "id": "pair_2"
+                }
+            ],
+            "authentication": {},
+            "metaSortKey": -9,
+            "_type": "request"
+        },
+        {
+            "_id": "fld_products",
+            "parentId": "wrk_generated_1",
+            "modified": 1678886400000,
+            "created": 1678886400000,
+            "name": "Products",
+            "description": "",
+            "environment": {},
+            "metaSortKey": -50,
+            "_type": "request_group"
+        },
+        {
+            "_id": "req_get_products",
+            "parentId": "fld_products",
+            "modified": 1678886400000,
+            "created": 1678886400000,
+            "url": "{{ _.baseUrl }}/products",
+            "name": "Get All Products",
+            "description": "",
+            "method": "GET",
+            "body": {},
+            "parameters": [],
+            "headers": [],
+            "authentication": {},
+            "metaSortKey": -10,
+            "_type": "request"
+        },
+        {
+            "_id": "fld_orders",
+            "parentId": "wrk_generated_1",
+            "modified": 1678886400000,
+            "created": 1678886400000,
+            "name": "Orders",
+            "description": "",
+            "environment": {},
+            "metaSortKey": 0,
+            "_type": "request_group"
+        },
+        {
+            "_id": "req_create_order",
+            "parentId": "fld_orders",
+            "modified": 1678886400000,
+            "created": 1678886400000,
+            "url": "{{ _.baseUrl }}/orders",
+            "name": "Create Order",
+            "description": "",
+            "method": "POST",
+            "body": {
+                "mimeType": "application/json",
+                "text": "{\n\t\"items\": [\n\t\t{\n\t\t\t\"productId\": 1,\n\t\t\t\"quantity\": 2\n\t\t}\n\t]\n}"
+            },
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "id": "pair_3"
+                }
+            ],
+            "authentication": {
+                "type": "bearer",
+                "token": "{{ _.token }}"
+            },
+            "metaSortKey": -10,
+            "_type": "request"
+        },
+        {
+            "_id": "req_get_orders",
+            "parentId": "fld_orders",
+            "modified": 1678886400000,
+            "created": 1678886400000,
+            "url": "{{ _.baseUrl }}/orders",
+            "name": "Get Orders",
+            "description": "",
+            "method": "GET",
+            "body": {},
+            "parameters": [],
+            "headers": [],
+            "authentication": {
+                "type": "bearer",
+                "token": "{{ _.token }}"
+            },
+            "metaSortKey": -9,
+            "_type": "request"
+        }
+    ]
+}
