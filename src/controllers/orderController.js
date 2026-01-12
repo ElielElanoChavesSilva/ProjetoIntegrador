@@ -22,3 +22,40 @@ exports.getOrders = async (req, res) => {
         res.status(error.status || 500).json({ msg: error.msg || 'Server error' });
     }
 };
+
+exports.getOrderById = async (req, res) => {
+    const userId = req.user.id;
+    const { id: orderId } = req.params;
+
+    try {
+        const order = await orderService.getOrderById(userId, orderId);
+        res.json(order);
+    } catch (error) {
+        res.status(error.status || 500).json({ msg: error.msg || 'Server error' });
+    }
+};
+
+exports.updateOrder = async (req, res) => {
+    const userId = req.user.id;
+    const { id: orderId } = req.params;
+    const { products } = req.body;
+
+    try {
+        const result = await orderService.updateOrder(userId, orderId, products);
+        res.json(result);
+    } catch (error) {
+        res.status(error.status || 500).json({ msg: error.msg || 'Server error' });
+    }
+};
+
+exports.deleteOrder = async (req, res) => {
+    const userId = req.user.id;
+    const { id: orderId } = req.params;
+
+    try {
+        const result = await orderService.deleteOrder(userId, orderId);
+        res.json(result);
+    } catch (error) {
+        res.status(error.status || 500).json({ msg: error.msg || 'Server error' });
+    }
+};

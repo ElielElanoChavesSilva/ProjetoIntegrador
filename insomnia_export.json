@@ -1,191 +1,230 @@
 {
     "_type": "export",
     "__export_format": 4,
-    "__export_date": "2024-05-20T15:00:00.000Z",
+    "__export_date": "2026-01-11T20:00:00.000Z",
     "__export_source": "gemini-cli",
     "resources": [
         {
-            "_id": "wrk_generated_1",
+            "_id": "wrk_1",
             "parentId": null,
-            "modified": 1678886400000,
-            "created": 1678886400000,
-            "name": "Backend API (Generated)",
+            "modified": 1768233600000,
+            "created": 1768233600000,
+            "name": "Backend API (CRUD Completo)",
             "description": "",
             "scope": "collection",
             "_type": "workspace"
         },
         {
-            "_id": "env_generated_1",
-            "parentId": "wrk_generated_1",
-            "modified": 1678886400000,
-            "created": 1678886400000,
+            "_id": "env_1",
+            "parentId": "wrk_1",
+            "modified": 1768233600000,
+            "created": 1768233600000,
             "name": "Base Environment",
             "data": {
-                "baseUrl": "http://localhost:3000"
+                "baseUrl": "http://localhost:3000",
+                "token": "your_jwt_token_here"
             },
-            "dataPropertyOrder": {
-                "&": [
-                    "baseUrl"
-                ]
-            },
-            "color": null,
-            "isPrivate": false,
-            "metaSortKey": 1678886400000,
             "_type": "environment"
         },
         {
-            "_id": "jar_generated_1",
-            "parentId": "wrk_generated_1",
-            "modified": 1678886400000,
-            "created": 1678886400000,
+            "_id": "jar_1",
+            "parentId": "wrk_1",
+            "modified": 1768233600000,
+            "created": 1768233600000,
             "name": "Default Jar",
             "cookies": [],
             "_type": "cookie_jar"
         },
         {
             "_id": "fld_auth",
-            "parentId": "wrk_generated_1",
-            "modified": 1678886400000,
-            "created": 1678886400000,
+            "parentId": "wrk_1",
             "name": "Auth",
-            "description": "",
-            "environment": {},
             "metaSortKey": -100,
             "_type": "request_group"
         },
         {
             "_id": "req_signup",
             "parentId": "fld_auth",
-            "modified": 1678886400000,
-            "created": 1678886400000,
             "url": "{{ _.baseUrl }}/auth/signup",
             "name": "Sign Up",
-            "description": "",
             "method": "POST",
             "body": {
                 "mimeType": "application/json",
                 "text": "{\n\t\"name\": \"Test User\",\n\t\"email\": \"test@example.com\",\n\t\"password\": \"password123\"\n}"
             },
-            "parameters": [],
             "headers": [
                 {
                     "name": "Content-Type",
-                    "value": "application/json",
-                    "id": "pair_1"
+                    "value": "application/json"
                 }
             ],
-            "authentication": {},
-            "metaSortKey": -10,
             "_type": "request"
         },
         {
             "_id": "req_signin",
             "parentId": "fld_auth",
-            "modified": 1678886400000,
-            "created": 1678886400000,
             "url": "{{ _.baseUrl }}/auth/signin",
             "name": "Sign In",
-            "description": "",
             "method": "POST",
             "body": {
                 "mimeType": "application/json",
                 "text": "{\n\t\"email\": \"test@example.com\",\n\t\"password\": \"password123\"\n}"
             },
-            "parameters": [],
             "headers": [
                 {
                     "name": "Content-Type",
-                    "value": "application/json",
-                    "id": "pair_2"
+                    "value": "application/json"
                 }
             ],
-            "authentication": {},
-            "metaSortKey": -9,
+            "_type": "request"
+        },
+        {
+            "_id": "fld_users",
+            "parentId": "wrk_1",
+            "name": "Users",
+            "metaSortKey": -90,
+            "_type": "request_group"
+        },
+        {
+            "_id": "req_get_profile",
+            "parentId": "fld_users",
+            "url": "{{ _.baseUrl }}/users/profile",
+            "name": "Get My Profile",
+            "method": "GET",
+            "authentication": { "type": "bearer", "token": "{{ _.token }}" },
+            "_type": "request"
+        },
+        {
+            "_id": "req_update_profile",
+            "parentId": "fld_users",
+            "url": "{{ _.baseUrl }}/users/profile",
+            "name": "Update My Profile",
+            "method": "PUT",
+            "body": {
+                "mimeType": "application/json",
+                "text": "{\n\t\"name\": \"New Name\",\n\t\"email\": \"new@email.com\"\n}"
+            },
+            "authentication": { "type": "bearer", "token": "{{ _.token }}" },
+            "_type": "request"
+        },
+        {
+            "_id": "req_delete_profile",
+            "parentId": "fld_users",
+            "url": "{{ _.baseUrl }}/users/profile",
+            "name": "Delete My Profile",
+            "method": "DELETE",
+            "authentication": { "type": "bearer", "token": "{{ _.token }}" },
             "_type": "request"
         },
         {
             "_id": "fld_products",
-            "parentId": "wrk_generated_1",
-            "modified": 1678886400000,
-            "created": 1678886400000,
+            "parentId": "wrk_1",
             "name": "Products",
-            "description": "",
-            "environment": {},
-            "metaSortKey": -50,
+            "metaSortKey": -80,
             "_type": "request_group"
         },
         {
-            "_id": "req_get_products",
+            "_id": "req_get_all_products",
             "parentId": "fld_products",
-            "modified": 1678886400000,
-            "created": 1678886400000,
             "url": "{{ _.baseUrl }}/products",
             "name": "Get All Products",
-            "description": "",
             "method": "GET",
-            "body": {},
-            "parameters": [],
-            "headers": [],
-            "authentication": {},
-            "metaSortKey": -10,
+            "_type": "request"
+        },
+        {
+            "_id": "req_get_product_by_id",
+            "parentId": "fld_products",
+            "url": "{{ _.baseUrl }}/products/1",
+            "name": "Get Product By ID",
+            "method": "GET",
+            "_type": "request"
+        },
+        {
+            "_id": "req_create_product",
+            "parentId": "fld_products",
+            "url": "{{ _.baseUrl }}/products",
+            "name": "Create Product",
+            "method": "POST",
+            "body": { "mimeType": "application/json", "text": "{\n\t\"name\": \"New Product\",\n\t\"price\": 19.99\n}" },
+            "authentication": { "type": "bearer", "token": "{{ _.token }}" },
+            "_type": "request"
+        },
+        {
+            "_id": "req_update_product",
+            "parentId": "fld_products",
+            "url": "{{ _.baseUrl }}/products/1",
+            "name": "Update Product",
+            "method": "PUT",
+            "body": { "mimeType": "application/json", "text": "{\n\t\"name\": \"Updated Product Name\",\n\t\"price\": 25.50\n}" },
+            "authentication": { "type": "bearer", "token": "{{ _.token }}" },
+            "_type": "request"
+        },
+        {
+            "_id": "req_delete_product",
+            "parentId": "fld_products",
+            "url": "{{ _.baseUrl }}/products/1",
+            "name": "Delete Product",
+            "method": "DELETE",
+            "authentication": { "type": "bearer", "token": "{{ _.token }}" },
             "_type": "request"
         },
         {
             "_id": "fld_orders",
-            "parentId": "wrk_generated_1",
-            "modified": 1678886400000,
-            "created": 1678886400000,
+            "parentId": "wrk_1",
             "name": "Orders",
-            "description": "",
-            "environment": {},
-            "metaSortKey": 0,
+            "metaSortKey": -70,
             "_type": "request_group"
+        },
+        {
+            "_id": "req_get_all_orders",
+            "parentId": "fld_orders",
+            "url": "{{ _.baseUrl }}/orders",
+            "name": "Get My Orders",
+            "method": "GET",
+            "authentication": { "type": "bearer", "token": "{{ _.token }}" },
+            "_type": "request"
+        },
+        {
+            "_id": "req_get_order_by_id",
+            "parentId": "fld_orders",
+            "url": "{{ _.baseUrl }}/orders/1",
+            "name": "Get My Order By ID",
+            "method": "GET",
+            "authentication": { "type": "bearer", "token": "{{ _.token }}" },
+            "_type": "request"
         },
         {
             "_id": "req_create_order",
             "parentId": "fld_orders",
-            "modified": 1678886400000,
-            "created": 1678886400000,
             "url": "{{ _.baseUrl }}/orders",
             "name": "Create Order",
-            "description": "",
             "method": "POST",
-            "body": {
-                "mimeType": "application/json",
-                "text": "{\n\t\"items\": [\n\t\t{\n\t\t\t\"productId\": 1,\n\t\t\t\"quantity\": 2\n\t\t}\n\t]\n}"
-            },
-            "parameters": [],
-            "headers": [
-                {
-                    "name": "Content-Type",
-                    "value": "application/json",
-                    "id": "pair_3"
-                }
-            ],
-            "authentication": {
-                "type": "bearer",
-                "token": "{{ _.token }}"
-            },
-            "metaSortKey": -10,
+            "body": { "mimeType": "application/json", "text": "{\n\t\"products\": [
+		{\"id\": 1, \"quantity\": 2},
+		{\"id\": 2, \"quantity\": 1}
+	]\n}" },
+            "authentication": { "type": "bearer", "token": "{{ _.token }}" },
             "_type": "request"
         },
         {
-            "_id": "req_get_orders",
+            "_id": "req_update_order",
             "parentId": "fld_orders",
-            "modified": 1678886400000,
-            "created": 1678886400000,
-            "url": "{{ _.baseUrl }}/orders",
-            "name": "Get Orders",
-            "description": "",
-            "method": "GET",
-            "body": {},
-            "parameters": [],
-            "headers": [],
-            "authentication": {
-                "type": "bearer",
-                "token": "{{ _.token }}"
-            },
-            "metaSortKey": -9,
+            "url": "{{ _.baseUrl }}/orders/1",
+            "name": "Update Order",
+            "method": "PUT",
+            "body": { "mimeType": "application/json", "text": "{\n\t\"products\": [
+		{\"id\": 3, \"quantity\": 5}
+	]\n}" },
+            "authentication": { "type": "bearer", "token": "{{ _.token }}" },
+            "_type": "request"
+        },
+        {
+            "_id": "req_delete_order",
+            "parentId": "fld_orders",
+            "url": "{{ _.baseUrl }}/orders/1",
+            "name": "Delete Order",
+            "method": "DELETE",
+            "authentication": { "type": "bearer", "token": "{{ _.token }}" },
             "_type": "request"
         }
     ]

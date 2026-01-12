@@ -42,7 +42,7 @@ const getOrders = (userId) => {
                           FROM OrderProducts op
                           JOIN Products p ON op.ProductId = p.Id
                          WHERE op.OrderId = ?
-                    `, [order.id], (err, products) => {
+                    `, [order.Id], (err, products) => {
                         if (err) {
                             return reject(err);
                         }
@@ -59,7 +59,97 @@ const getOrders = (userId) => {
     });
 };
 
+const getOrderById = (userId, orderId) => {
+    return new Promise((resolve, reject) => {
+        db.get('SELECT * FROM Orders WHERE Id = ? AND UserId = ?', [orderId, userId], (err, order) => {
+            if (err) {
+                return reject({ status: 500, msg: err.message });
+            }
+            if (!order) {
+                return reject({ status: 404, msg: 'Order not found or access denied' });
+            }
+
+            db.all(`
+                SELECT p.Id, p.Name, p.Price, op.Quantity
+                  FROM OrderProducts op
+                  JOIN Products p ON op.ProductId = p.Id
+                 WHERE op.OrderId = ?
+            `, [order.Id], (err, products) => {
+                if (err) {
+                    return reject({ status: 500, msg: err.message });
+                }
+                order.products = products;
+                resolve(order);
+            });
+        });
+    });
+};
+
+const updateOrder = (userId, orderId, products) => {
+    return new Promise((resolve, reject) => {
+        db.get('SELECT * FROM Orders WHERE Id = ? AND UserId = ?', [orderId, userId], (err, order) => {
+            if (err) { return reject({ status: 500, msg: err.message }); }
+            if (!order) { return reject({ status: 404, msg: 'Order not found or access denied' }); }
+
+            db.serialize(() => {
+                db.run('BEGIN TRANSACTION');
+                db.run('DELETE FROM OrderProducts WHERE OrderId = ?', [orderId], (err) => {
+                    if (err) {
+                        db.run('ROLLBACK');
+                        return reject({ status: 500, msg: 'Failed to update order products' });
+                    }
+
+                    const stmt = db.prepare('INSERT INTO OrderProducts (OrderId, ProductId, Quantity) VALUES (?, ?, ?)');
+                    products.forEach(product => {
+                        stmt.run(orderId, product.id, product.quantity);
+                    });
+
+                    stmt.finalize((err) => {
+                        if (err) {
+                            db.run('ROLLBACK');
+                            return reject({ status: 500, msg: 'Failed to finalize order update' });
+                        }
+                        db.run('COMMIT');
+                        resolve({ orderId, products });
+                    });
+                });
+            });
+        });
+    });
+};
+
+const deleteOrder = (userId, orderId) => {
+    return new Promise((resolve, reject) => {
+        db.get('SELECT * FROM Orders WHERE Id = ? AND UserId = ?', [orderId, userId], (err, order) => {
+            if (err) { return reject({ status: 500, msg: err.message }); }
+            if (!order) { return reject({ status: 404, msg: 'Order not found or access denied' }); }
+
+            db.serialize(() => {
+                db.run('BEGIN TRANSACTION');
+                db.run('DELETE FROM OrderProducts WHERE OrderId = ?', [orderId], (err) => {
+                    if (err) {
+                        db.run('ROLLBACK');
+                        return reject({ status: 500, msg: 'Failed to delete order products' });
+                    }
+                    db.run('DELETE FROM Orders WHERE Id = ?', [orderId], (err) => {
+                        if (err) {
+                            db.run('ROLLBACK');
+                            return reject({ status: 500, msg: 'Failed to delete order' });
+                        }
+                        db.run('COMMIT');
+                        resolve({ msg: 'Order deleted successfully' });
+                    });
+                });
+            });
+        });
+    });
+};
+
+
 module.exports = {
     createOrder,
     getOrders,
+    getOrderById,
+    updateOrder,
+    deleteOrder,
 };
