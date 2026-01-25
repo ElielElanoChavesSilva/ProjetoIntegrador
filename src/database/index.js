@@ -20,17 +20,10 @@ db.serialize(() => {
         Price REAL NOT NULL
     )`);
 
-    db.run(`CREATE TABLE IF NOT EXISTS Orders (
-        Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    db.run(`CREATE TABLE IF NOT EXISTS ShoppingList (
         UserId INTEGER,
-        FOREIGN KEY (UserId) REFERENCES Users (Id)
-    )`);
-
-    db.run(`CREATE TABLE IF NOT EXISTS OrderProducts (
-        OrderId INTEGER,
         ProductId INTEGER,
-        Quantity INTEGER,
-        FOREIGN KEY (OrderId) REFERENCES Orders (Id),
+        FOREIGN KEY (UserId) REFERENCES Users (Id),
         FOREIGN KEY (ProductId) REFERENCES Products (Id)
     )`);
 
