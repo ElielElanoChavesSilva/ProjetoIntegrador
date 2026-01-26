@@ -67,9 +67,65 @@ const deleteUserProfile = (userId) => {
     });
 };
 
+const addProductToShoppingList = (userId, productId) => {
+    return new Promise((resolve, reject) => {
+        // First, check if the product exists
+        db.get('SELECT Id FROM Products WHERE Id = ?', [productId], (err, product) => {
+            if (err) {
+                return reject({ status: 500, msg: err.message });
+            }
+            if (!product) {
+                return reject({ status: 404, msg: 'Product not found' });
+            }
+
+            // If product exists, add it to the shopping list
+            db.run('INSERT INTO ShoppingList (UserId, ProductId) VALUES (?, ?)', [userId, productId], function (err) {
+                if (err) {
+                    // Check for unique constraint violation (product already in list)
+                    if (err.code === 'SQLITE_CONSTRAINT') {
+                        return reject({ status: 409, msg: 'Product already in shopping list' });
+                    }
+                    return reject({ status: 500, msg: err.message });
+                }
+                resolve({ msg: 'Product added to shopping list' });
+            });
+        });
+    });
+};
+
+const getShoppingList = (userId) => {
+    return new Promise((resolve, reject) => {
+        db.all(`SELECT p.Id, p.Name, p.Price FROM Products p
+                JOIN ShoppingList sl ON p.Id = sl.ProductId
+                WHERE sl.UserId = ?`, [userId], (err, rows) => {
+            if (err) {
+                return reject({ status: 500, msg: err.message });
+            }
+            resolve(rows);
+        });
+    });
+};
+
+const removeProductFromShoppingList = (userId, productId) => {
+    return new Promise((resolve, reject) => {
+        db.run('DELETE FROM ShoppingList WHERE UserId = ? AND ProductId = ?', [userId, productId], function (err) {
+            if (err) {
+                return reject({ status: 500, msg: err.message });
+            }
+            if (this.changes === 0) {
+                return reject({ status: 404, msg: 'Product not found in shopping list' });
+            }
+            resolve({ msg: 'Product removed from shopping list' });
+        });
+    });
+};
+
 
 module.exports = {
     getUserProfile,
     updateUserProfile,
     deleteUserProfile,
+    addProductToShoppingList,
+    getShoppingList,
+    removeProductFromShoppingList,
 };

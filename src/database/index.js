@@ -24,7 +24,8 @@ db.serialize(() => {
         UserId INTEGER,
         ProductId INTEGER,
         FOREIGN KEY (UserId) REFERENCES Users (Id),
-        FOREIGN KEY (ProductId) REFERENCES Products (Id)
+        FOREIGN KEY (ProductId) REFERENCES Products (Id),
+        PRIMARY KEY (UserId, ProductId)
     )`);
 
     const products = [

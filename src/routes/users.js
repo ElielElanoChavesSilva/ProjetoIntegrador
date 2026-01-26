@@ -21,4 +21,19 @@ router.put('/profile', userController.updateUserProfile);
 // @access  Private
 router.delete('/profile', userController.deleteUserProfile);
 
+// @route   GET /users/shopping-list
+// @desc    Get user's shopping list
+// @access  Private
+router.get('/shopping-list', userController.getShoppingList);
+
+// @route   POST /users/shopping-list
+// @desc    Add a product to user's shopping list
+// @access  Private
+router.post('/shopping-list', userController.addProductToShoppingList);
+
+// @route   DELETE /users/shopping-list/:productId
+// @desc    Remove a product from user's shopping list
+// @access  Private
+router.delete('/shopping-list/:productId', userController.removeProductFromShoppingList);
+
 module.exports = router;

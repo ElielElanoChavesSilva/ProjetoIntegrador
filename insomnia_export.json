@@ -117,6 +117,46 @@
             "_type": "request"
         },
         {
+            "_id": "req_get_shopping_list",
+            "parentId": "fld_users",
+            "url": "{{ _.baseUrl }}/users/shopping-list",
+            "name": "Get My Shopping List",
+            "method": "GET",
+            "authentication": { "type": "bearer", "token": "{{ _.token }}" },
+            "_type": "request",
+            "metaSortKey": -85
+        },
+        {
+            "_id": "req_add_to_shopping_list",
+            "parentId": "fld_users",
+            "url": "{{ _.baseUrl }}/users/shopping-list",
+            "name": "Add Product to Shopping List",
+            "method": "POST",
+            "body": {
+                "mimeType": "application/json",
+                "text": "{\n\t\"productId\": 1\n}"
+            },
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "authentication": { "type": "bearer", "token": "{{ _.token }}" },
+            "_type": "request",
+            "metaSortKey": -84
+        },
+        {
+            "_id": "req_remove_from_shopping_list",
+            "parentId": "fld_users",
+            "url": "{{ _.baseUrl }}/users/shopping-list/1",
+            "name": "Remove Product from Shopping List",
+            "method": "DELETE",
+            "authentication": { "type": "bearer", "token": "{{ _.token }}" },
+            "_type": "request",
+            "metaSortKey": -83
+        },
+        {
             "_id": "fld_products",
             "parentId": "wrk_1",
             "name": "Products",
@@ -147,6 +187,12 @@
             "method": "POST",
             "body": { "mimeType": "application/json", "text": "{\n\t\"name\": \"New Product\",\n\t\"price\": 19.99\n}" },
             "authentication": { "type": "bearer", "token": "{{ _.token }}" },
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
             "_type": "request"
         },
         {
@@ -157,6 +203,12 @@
             "method": "PUT",
             "body": { "mimeType": "application/json", "text": "{\n\t\"name\": \"Updated Product Name\",\n\t\"price\": 25.50\n}" },
             "authentication": { "type": "bearer", "token": "{{ _.token }}" },
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
             "_type": "request"
         },
         {
@@ -164,65 +216,6 @@
             "parentId": "fld_products",
             "url": "{{ _.baseUrl }}/products/1",
             "name": "Delete Product",
-            "method": "DELETE",
-            "authentication": { "type": "bearer", "token": "{{ _.token }}" },
-            "_type": "request"
-        },
-        {
-            "_id": "fld_orders",
-            "parentId": "wrk_1",
-            "name": "Orders",
-            "metaSortKey": -70,
-            "_type": "request_group"
-        },
-        {
-            "_id": "req_get_all_orders",
-            "parentId": "fld_orders",
-            "url": "{{ _.baseUrl }}/orders",
-            "name": "Get My Orders",
-            "method": "GET",
-            "authentication": { "type": "bearer", "token": "{{ _.token }}" },
-            "_type": "request"
-        },
-        {
-            "_id": "req_get_order_by_id",
-            "parentId": "fld_orders",
-            "url": "{{ _.baseUrl }}/orders/1",
-            "name": "Get My Order By ID",
-            "method": "GET",
-            "authentication": { "type": "bearer", "token": "{{ _.token }}" },
-            "_type": "request"
-        },
-        {
-            "_id": "req_create_order",
-            "parentId": "fld_orders",
-            "url": "{{ _.baseUrl }}/orders",
-            "name": "Create Order",
-            "method": "POST",
-            "body": { "mimeType": "application/json", "text": "{\n\t\"products\": [
-		{\"id\": 1, \"quantity\": 2},
-		{\"id\": 2, \"quantity\": 1}
-	]\n}" },
-            "authentication": { "type": "bearer", "token": "{{ _.token }}" },
-            "_type": "request"
-        },
-        {
-            "_id": "req_update_order",
-            "parentId": "fld_orders",
-            "url": "{{ _.baseUrl }}/orders/1",
-            "name": "Update Order",
-            "method": "PUT",
-            "body": { "mimeType": "application/json", "text": "{\n\t\"products\": [
-		{\"id\": 3, \"quantity\": 5}
-	]\n}" },
-            "authentication": { "type": "bearer", "token": "{{ _.token }}" },
-            "_type": "request"
-        },
-        {
-            "_id": "req_delete_order",
-            "parentId": "fld_orders",
-            "url": "{{ _.baseUrl }}/orders/1",
-            "name": "Delete Order",
             "method": "DELETE",
             "authentication": { "type": "bearer", "token": "{{ _.token }}" },
             "_type": "request"
