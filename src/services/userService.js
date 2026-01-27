@@ -21,7 +21,6 @@ const updateUserProfile = (userId, { name, email, password }) => {
             return reject({ status: 400, msg: 'Please provide data to update' });
         }
 
-        // First, get the current user data
         db.get('SELECT * FROM Users WHERE Id = ?', [userId], (err, user) => {
             if (err) { return reject({ status: 500, msg: err.message }); }
             if (!user) { return reject({ status: 404, msg: 'User not found' }); }
@@ -53,8 +52,7 @@ const updateUserProfile = (userId, { name, email, password }) => {
 
 const deleteUserProfile = (userId) => {
     return new Promise((resolve, reject) => {
-        // Here you might want to handle cascading deletes for orders, etc.
-        // For simplicity, we'll just delete the user.
+       
         db.run('DELETE FROM Users WHERE Id = ?', [userId], function (err) {
             if (err) {
                 return reject({ status: 500, msg: err.message });
@@ -69,7 +67,6 @@ const deleteUserProfile = (userId) => {
 
 const addProductToShoppingList = (userId, productId) => {
     return new Promise((resolve, reject) => {
-        // First, check if the product exists
         db.get('SELECT Id FROM Products WHERE Id = ?', [productId], (err, product) => {
             if (err) {
                 return reject({ status: 500, msg: err.message });
@@ -78,10 +75,8 @@ const addProductToShoppingList = (userId, productId) => {
                 return reject({ status: 404, msg: 'Product not found' });
             }
 
-            // If product exists, add it to the shopping list
             db.run('INSERT INTO ShoppingList (UserId, ProductId) VALUES (?, ?)', [userId, productId], function (err) {
                 if (err) {
-                    // Check for unique constraint violation (product already in list)
                     if (err.code === 'SQLITE_CONSTRAINT') {
                         return reject({ status: 409, msg: 'Product already in shopping list' });
                     }
