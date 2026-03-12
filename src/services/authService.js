@@ -39,7 +39,7 @@ const signin = (email, password) => {
             return reject({ status: 400, msg: 'Please enter all fields' });
         }
 
-        db.get('SELECT * FROM Users WHERE Email = ?', [email], (err, user) => {
+        db.get('SELECT Id, Name, Email, Password as password FROM Users WHERE Email = ?', [email], (err, user) => {
             if (err) {
                 return reject({ status: 500, msg: err.message });
             }
@@ -53,14 +53,16 @@ const signin = (email, password) => {
                 }
 
                 jwt.sign(
-                    { id: user.id, name: user.name, email: user.email },
+                    { id: user.Id, name: user.Name, email: user.Email },
                     process.env.JWT_SECRET,
                     { expiresIn: 3600 },
                     (err, token) => {
-                        if (err) return reject({ status: 500, msg: 'Error signing token' });
+                        if (err) {
+                             return reject({ status: 500, msg: 'Error signing token' });
+                        }
                         resolve({
                             token,
-                            user: { id: user.id, name: user.name, email: user.email }
+                            user: { id: user.Id, name: user.Name, email: user.Email }
                         });
                     }
                 );
